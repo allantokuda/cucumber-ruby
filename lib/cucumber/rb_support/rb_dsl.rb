@@ -112,6 +112,14 @@ module Cucumber
         proc_or_sym = symbol || proc
         RbDsl.register_rb_step_definition(regexp, proc_or_sym, options)
       end
+
+      # Registers a step definition similarly to the style of Spinach, where the
+      # using file is required to have the same namespace. A step defined this way
+      # in "foo_steps.rb" will ONLY be usable in a file named "foo.feature".
+      # Unlike Spinach, regexp is still supported.
+      def step(regexp, &proc)
+        RbDsl.register_rb_step_definition(regexp, proc, { namespace: true })
+      end
     end
   end
 end

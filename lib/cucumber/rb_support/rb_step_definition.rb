@@ -25,7 +25,7 @@ module Cucumber
       class << self
         def new(rb_language, pattern, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super rb_language, parse_pattern(pattern), create_proc(proc_or_sym, options)
+          super rb_language, parse_pattern(pattern), options, create_proc(proc_or_sym, options)
         end
 
         private
@@ -69,8 +69,8 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, regexp, proc)
-        @rb_language, @regexp, @proc = rb_language, regexp, proc
+      def initialize(rb_language, regexp, options, proc)
+        @rb_language, @regexp, @options, @proc = rb_language, regexp, options, proc
         @rb_language.available_step_definition(regexp_source, location)
       end
 
@@ -128,8 +128,7 @@ module Cucumber
       end
 
       def namespace
-        File.basename(file, '_steps.rb')
-        #@is_namespaced ? File.basename(file, '_steps.rb') : nil
+        @options[:namespace] == true ? File.basename(file, '_steps.rb') : nil
       end
     end
   end
