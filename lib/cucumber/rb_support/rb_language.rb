@@ -51,8 +51,14 @@ module Cucumber
         @world_proc = @world_modules = nil
       end
 
-      def step_matches(name_to_match, name_to_format)
-        @step_definitions.map do |step_definition|
+      def step_definitions_in_namespace(namespace)
+        @step_definitions.select do |step_definition|
+          step_definition.namespace == nil || step_definition.namespace == namespace
+        end
+      end
+
+      def step_matches(name_to_match, namespace, name_to_format)
+        step_definitions_in_namespace(namespace).map do |step_definition|
           if(arguments = step_definition.arguments_from(name_to_match))
             StepMatch.new(step_definition, name_to_match, name_to_format, arguments)
           else

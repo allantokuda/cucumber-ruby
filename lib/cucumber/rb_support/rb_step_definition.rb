@@ -126,6 +126,11 @@ module Cucumber
       def file
         @file ||= location.file
       end
+
+      def namespace
+        File.basename(file, '_steps.rb')
+        #@is_namespaced ? File.basename(file, '_steps.rb') : nil
+      end
     end
   end
 end
